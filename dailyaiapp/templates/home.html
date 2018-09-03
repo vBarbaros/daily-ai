@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="true" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Home</a>
+          <a class="navbar-brand" href="/">News Feed</a>
+          <a class="navbar-brand" href="/">Weather</a>
+          <a class="navbar-brand" href="/">Currency</a>
+        </div>
+      </div>  
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Daily AI</h1>
+        <p>Explore the Power of Math in Your Everyday Life</p>
+      </div>  
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Simple</h2>
+          <p>...details </p>
+        </div>
+        <div class="col-md-4">
+          <h2>Effective</h2>
+          <p>...details</p>
+       </div>
+        <div class="col-md-4">
+          <h2>Register now</h2>
+          <p>...details</p>
+          </form>
+        </div>
+      </div>
+    </div>
+{% endblock %}
