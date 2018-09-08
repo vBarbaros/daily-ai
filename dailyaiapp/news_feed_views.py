@@ -29,34 +29,35 @@ CURRENCY_URL = 'https://openexchangerates.org//api/latest.json?app_id=7c049d68cc
 
 @app.route("/")
 def home():
-    return render_template("home.html")
-# @app.route("/")
-# def home():
-#     # get customized headlines, based on user input or default
-#     publication = request.args.get('publication')
-#     if not publication:
-#         publication = DEFAULTS['publication']
-#     articles = get_news(publication)
-#     # get customized weather based on user input or default
-#     city = request.args.get('city')
-#     if not city:
-#         city = DEFAULTS['city']
-#     weather = get_weather(city)
+    # get customized headlines, based on user input or default
+    publication = request.args.get('publication')
+    if not publication:
+        publication = DEFAULTS['publication']
+    articles = get_news(publication)
+    # get customized weather based on user input or default
+    # city = request.args.get('city')
+    # if not city:
+    #     city = DEFAULTS['city']
+    # weather = get_weather(city)
 
-#     # get customized currency based on user input or default
-#     currency_from = request.args.get("currency_from")
-#     if not currency_from:
-#         currency_from = DEFAULTS['currency_from']
-#     currency_to = request.args.get("currency_to")
-#     if not currency_to:
-#         currency_to = DEFAULTS['currency_to']
-#     rate, currencies = get_rate(currency_from, currency_to)
-#     return render_template(
-#         "home.html", publications=RSS_FEEDS.keys(), pub_display=publication.upper(),
-#         articles=articles, weather=weather, 
-#         currency_from=currency_from, currency_to=currency_to, 
-#         rate=rate, currencies=sorted(currencies)
-#         )
+    # get customized currency based on user input or default
+    # currency_from = request.args.get("currency_from")
+    # if not currency_from:
+    #     currency_from = DEFAULTS['currency_from']
+    # currency_to = request.args.get("currency_to")
+    # if not currency_to:
+    #     currency_to = DEFAULTS['currency_to']
+    # rate, currencies = get_rate(currency_from, currency_to)
+    # return render_template(
+    #     "home.html", publications=RSS_FEEDS.keys(), pub_display=publication.upper(),
+    #     articles=articles, weather=weather, 
+    #     currency_from=currency_from, currency_to=currency_to, 
+    #     rate=rate, currencies=sorted(currencies)
+    #     )
+    return render_template(
+        "home.html", publications=RSS_FEEDS.keys(), pub_display=publication,
+        articles=articles
+        )
 
 def get_news(query):
     if not query or query.lower() not in RSS_FEEDS:

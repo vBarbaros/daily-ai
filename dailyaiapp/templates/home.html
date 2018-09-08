@@ -44,4 +44,22 @@
         </div>
       </div>
     </div>
+    <div class="container">
+      <h2>Consult Your Favorite Headlines</h2>
+            <form> Choose publisher: 
+                <select name="publication">
+                    {% for pub in publications %}
+                        <option value="{{ pub }}" {% if pub==pub_display %} selected="selected"{% endif %}>
+                        {{pub}}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Submit" />
+            </form>
+            <h2>News Feed from {{ pub_display | upper }}</h2>
+            {% for article in articles %}
+                <b><a href="{{article.link}}" target="_blank">{{article.title}}</b></a><br />
+                <i>{{article.published}}</i><br />
+                <p>{{article.summary}}</p>
+            {% endfor %}
+    </div>
 {% endblock %}
