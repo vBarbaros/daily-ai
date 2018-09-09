@@ -7,4 +7,4 @@ from flask_bcrypt import Bcrypt
 app = Flask(__name__, static_folder='static')
 
 # Import the application views
-from dailyaiapp import news_feed_views
+from dailyaiapp import daily_ai_views
