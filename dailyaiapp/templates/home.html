@@ -10,10 +10,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Home</a>
-          <a class="navbar-brand" href="/">News Feed</a>
+          <a class="navbar-brand" href="/">Home</a>
+          <!-- <a class="navbar-brand" href="/">News Feed</a>
           <a class="navbar-brand" href="/">Weather</a>
-          <a class="navbar-brand" href="/">Currency</a>
+          <a class="navbar-brand" href="/">Currency</a> -->
         </div>
       </div>  
     </nav>
@@ -60,6 +60,15 @@
                 <b><a href="{{article.link}}" target="_blank">{{article.title}}</b></a><br />
                 <i>{{article.published}}</i><br />
                 <p>{{article.summary}}</p>
+                <form class="form-inline" action="/articletext">
+                  <tr>
+                    <!-- <td>cell 1</td> 
+                    <td>cell 2</td>  -->
+                    <td><input type="submit" value="Get Content" class="form-control"></td>
+                    <input type="text" name="article_link" value="{{article.link}}" hidden>
+                    <input type="text" name="title" value="{{article.title}}" hidden>  
+                  </tr>
+                </form>
             {% endfor %}
     </div>
 {% endblock %}

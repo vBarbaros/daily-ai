@@ -7,6 +7,8 @@ import feedparser
 import json
 import urllib2
 import urllib
+import nltk
+from bs4 import BeautifulSoup
 
 
 RSS_FEEDS = {
@@ -58,6 +60,22 @@ def home():
         "home.html", publications=RSS_FEEDS.keys(), pub_display=publication,
         articles=articles
         )
+
+@app.route("/articletext")
+def article_text():
+    article_link = request.args.get("article_link")
+    title = request.args.get("title")
+    article_content = get_content_from_link(article_link)
+    return render_template("article_text.html", title=title, link=article_link, article_content=article_content)
+
+def get_content_from_link(link):
+    f = urllib.urlopen(link)
+    response = f.read()
+    soup = BeautifulSoup(response, 'html.parser')
+    content_sents = []
+    for line in soup.find_all('p'):
+        content_sents.append(line.contents)
+    return content_sents
 
 def get_news(query):
     if not query or query.lower() not in RSS_FEEDS:
