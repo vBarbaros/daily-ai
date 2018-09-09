@@ -8,6 +8,7 @@ import json
 import urllib2
 import urllib
 import nltk
+import re
 from bs4 import BeautifulSoup
 
 
@@ -39,28 +40,8 @@ def home():
         publication = DEFAULTS['publication']
     PUBLICATION_TO_SHOW = publication
     articles = get_news(publication)
-    # get customized weather based on user input or default
-    # city = request.args.get('city')
-    # if not city:
-    #     city = DEFAULTS['city']
-    # weather = get_weather(city)
-
-    # get customized currency based on user input or default
-    # currency_from = request.args.get("currency_from")
-    # if not currency_from:
-    #     currency_from = DEFAULTS['currency_from']
-    # currency_to = request.args.get("currency_to")
-    # if not currency_to:
-    #     currency_to = DEFAULTS['currency_to']
-    # rate, currencies = get_rate(currency_from, currency_to)
-    # return render_template(
-    #     "home.html", publications=RSS_FEEDS.keys(), pub_display=publication.upper(),
-    #     articles=articles, weather=weather, 
-    #     currency_from=currency_from, currency_to=currency_to, 
-    #     rate=rate, currencies=sorted(currencies)
-    #     )
     return render_template(
-        "home.html", publications=RSS_FEEDS.keys(), pub_display=publication,
+        "home.html", publications=RSS_FEEDS.keys(), pub_display=PUBLICATION_TO_SHOW,
         articles=articles
         )
 
@@ -68,7 +49,8 @@ def home():
 def article_text():
     article_link = request.args.get("article_link")
     title = request.args.get("title")
-    article_content = get_content_from_link(article_link)
+    PUBLICATION_TO_SHOW = request.args.get("pub_to_display")
+    article_content = get_content_from_link(article_link, PUBLICATION_TO_SHOW)
     return render_template(
         "article_text.html", 
         publication_to_show=PUBLICATION_TO_SHOW,
@@ -76,15 +58,29 @@ def article_text():
         link=article_link, 
         article_content=article_content)
 
-def get_content_from_link(link):
+def get_content_from_link(link, pub_name):
     f = urllib.urlopen(link)
     response = f.read()
     soup = BeautifulSoup(response, 'html.parser')
     content_sents = []
-    for line in soup.find_all('p'):
-        if len(line.contents) != 0:
-            content_sents.append(line.contents[0])
+    content_forbidden = []
+    
+    if pub_name == 'bbc':
+        content_sents = get_text_from_bbc(soup)
+    else:
+        for line in soup.find_all('p'):
+            if len(line.contents) != 0:
+                content_sents.append(line.contents[0])
+
+    if len(content_sents) == 0:
+        for line in soup.find_all('p'):
+            if len(line.contents) != 0:
+                content_sents.append(line.contents[0])
+
     return content_sents
+
+
+
 
 def get_news(query):
     if not query or query.lower() not in RSS_FEEDS:
@@ -100,28 +96,70 @@ def get_news(query):
             pass
     return feed['entries']
 
+def get_text_from_bbc(soup):
+    content_sents = []
+    content_forbidden = []
+    found_class_one = soup.find_all(lambda tag: tag.name == 'div' and tag.get('class') == ['story-body'])
+    if found_class_one != []:
+        for line in found_class_one:
+            for line_cont in line.find_all('a'):
+                if len(line_cont.contents) != 0:
+                    content_forbidden.append(line_cont.contents[0])
 
-def get_weather(query):
-    query = urllib.quote(query)
-    url = WEATHER_URL.format(query)
-    data = urllib2.urlopen(url).read()
-    parsed = json.loads(data)
-    weather = None
-    
-    if parsed.get('weather'):
-        weather = {
-        'description': parsed['weather'][0]['description'],
-        'temperature': parsed['main']['temp'],
-        'city': parsed['name'],
-        'country': parsed['sys']['country']
-        }
-    return weather
+            for line_cont in line.find_all('h1'):
+                if len(line_cont.contents) != 0 and line_cont.contents[0] not in content_forbidden:
+                    for i in line_cont.contents:
+                        content_sents.append(i)
+            for line_cont in line.find_all('p'):
+                if len(line_cont.contents) != 0 and line_cont.contents[0] not in content_forbidden:
+                    for i in line_cont.contents:
+                        if i.find('link-external') == -1:
+                            content_sents.append(i)
+                        else:
+                            content_sents.append(i.contents[0])
+            #return content_sents
+    found_class_two = soup.find_all(lambda tag: tag.name == 'div' and tag.get('class') == ['vxp-media__body'])
+    if found_class_two != []:
+        for line in found_class_two:
+            for line_cont in line.find_all('a'):
+                if len(line_cont.contents) != 0:
+                    content_forbidden.append(line_cont.contents[0])
 
-def get_rate(frm, to):
-    all_currency = urllib2.urlopen(CURRENCY_URL).read()
-    parsed = json.loads(all_currency).get('rates')
-    frm_rate = parsed.get(frm.upper())
-    to_rate = parsed.get(to.upper())
-    return (to_rate/frm_rate, parsed.keys())
+            for line_cont in line.find_all('h1'):
+                if len(line_cont.contents) != 0 and line_cont.contents[0] not in content_forbidden:
+                    for i in line_cont.contents:
+                        content_sents.append(i)
+            for line_cont in line.find_all('p'):
+                if len(line_cont.contents) != 0 and line_cont.contents[0] not in content_forbidden:
+                    for i in line_cont.contents:
+                        if i.find('link-external') == -1:
+                            content_sents.append(i)
+                        else:
+                            content_sents.append(i.contents[0])
+            #return content_sents
 
+    found_class_three = soup.find_all(lambda tag: tag.name == 'div' and tag.get('id') == ['story-body'])
+    if found_class_three != []:
+        for line in found_class_two:
+            for line_cont in line.find_all('a'):
+                if len(line_cont.contents) != 0:
+                    content_forbidden.append(line_cont.contents[0])
 
+            for line_cont in line.find_all('h1'):
+                if len(line_cont.contents) != 0 and line_cont.contents[0] not in content_forbidden:
+                    for i in line_cont.contents:
+                        content_sents.append(i)
+            for line_cont in line.find_all('p'):
+                if len(line_cont.contents) != 0 and line_cont.contents[0] not in content_forbidden:
+                    for i in line_cont.contents:
+                        if i.find('link-external') == -1:
+                            content_sents.append(i)
+                        else:
+                            content_sents.append(i.contents[0])
+
+    if len(content_sents) == 0:
+        for line in soup.find_all('p'):
+            if len(line.contents) != 0:
+                content_sents.append(line.contents[0])
+
+    return content_sents
