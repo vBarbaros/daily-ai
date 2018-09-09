@@ -28,11 +28,15 @@
     </div>
 
     <div class="container">
-      <h1>{{ title }}</h1>
-      <h2>{{ link }}</h2>
-      <p>{{ article_content }}</p>
-      {% for pub in article_content %}
-          <p>{{ pub }}</p>
+      <h1><a href="{{link}}" target="_blank">{{publication_to_show | upper}} : {{title}}</h1></a>
+      <br />
+      <br />
+      <br />
+      {% for textline in article_content %}
+          <p>{{ textline }}</p>
       {% endfor %}
+      <br />
+      <br />
+      <br />
     </div>
 {% endblock %}

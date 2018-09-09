@@ -25,6 +25,8 @@ DEFAULTS = {
     'currency_from': 'CAD', 'currency_to': 'USD'
     }
 
+PUBLICATION_TO_SHOW = DEFAULTS['publication']
+
 WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=97cdbe13097f09f5a3334076e1d5eca4'
 CURRENCY_URL = 'https://openexchangerates.org//api/latest.json?app_id=7c049d68cc6b4274970cca63852e1e99'
 
@@ -35,6 +37,7 @@ def home():
     publication = request.args.get('publication')
     if not publication:
         publication = DEFAULTS['publication']
+    PUBLICATION_TO_SHOW = publication
     articles = get_news(publication)
     # get customized weather based on user input or default
     # city = request.args.get('city')
@@ -66,7 +69,12 @@ def article_text():
     article_link = request.args.get("article_link")
     title = request.args.get("title")
     article_content = get_content_from_link(article_link)
-    return render_template("article_text.html", title=title, link=article_link, article_content=article_content)
+    return render_template(
+        "article_text.html", 
+        publication_to_show=PUBLICATION_TO_SHOW,
+        title=title, 
+        link=article_link, 
+        article_content=article_content)
 
 def get_content_from_link(link):
     f = urllib.urlopen(link)
@@ -74,7 +82,8 @@ def get_content_from_link(link):
     soup = BeautifulSoup(response, 'html.parser')
     content_sents = []
     for line in soup.find_all('p'):
-        content_sents.append(line.contents)
+        if len(line.contents) != 0:
+            content_sents.append(line.contents[0])
     return content_sents
 
 def get_news(query):

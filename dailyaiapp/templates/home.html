@@ -57,18 +57,20 @@
             </form>
             <h2>News Feed from {{ pub_display | upper }}</h2>
             {% for article in articles %}
-                <b><a href="{{article.link}}" target="_blank">{{article.title}}</b></a><br />
-                <i>{{article.published}}</i><br />
-                <p>{{article.summary}}</p>
                 <form class="form-inline" action="/articletext">
                   <tr>
-                    <!-- <td>cell 1</td> 
-                    <td>cell 2</td>  -->
+                    <td>
+                      <b><a href="{{article.link}}" target="_blank">{{article.title}}</b></a><br />
+                      <i>{{article.published}}</i><br />
+                      <p>{{article.summary}}</p>
+                    </td>
                     <td><input type="submit" value="Get Content" class="form-control"></td>
                     <input type="text" name="article_link" value="{{article.link}}" hidden>
                     <input type="text" name="title" value="{{article.title}}" hidden>  
                   </tr>
                 </form>
+                <br />
+                <br />
             {% endfor %}
     </div>
 {% endblock %}
