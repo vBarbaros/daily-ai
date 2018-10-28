@@ -18,14 +18,17 @@ RSS_FEEDS = {
     'fox': 'http://feeds.foxnews.com/foxnews/latest',
     'iol': 'http://www.iol.co.za/cmlink/1.640',
     'reuters': 'http://feeds.reuters.com/news/wealth',
-    'marketwatch-top stories': 'http://www.marketwatch.com/rss/topstories'
+    'marketwatch-top stories': 'http://www.marketwatch.com/rss/topstories',
+    'financial post':'https://business.financialpost.com/feed/',
+    'montreal gazette': 'http://feeds.feedburner.com/GazetteOnlineLocalNews',
+    'la presse - actualite': 'https://www.lapresse.ca/rss/178.xml'
     }
 USELESS_SENTENCES = [
     'Share this with', 'Email', 'Facebook', 'Messenger', 'Twitter', 'Pinterest', 'WhatsApp', 'LinkedIn',
     'Copy this link', 'These are external links and will open in a new window'
     ]
 DEFAULTS = {
-    'publication':'bbc', 'city': 'Montreal,CA',
+    'publication':'financial post', 'city': 'Montreal,CA',
     'currency_from': 'CAD', 'currency_to': 'USD'
     }
 
