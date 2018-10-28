@@ -20,7 +20,10 @@ RSS_FEEDS = {
     'reuters': 'http://feeds.reuters.com/news/wealth',
     'marketwatch-top stories': 'http://www.marketwatch.com/rss/topstories'
     }
-
+USELESS_SENTENCES = [
+    'Share this with', 'Email', 'Facebook', 'Messenger', 'Twitter', 'Pinterest', 'WhatsApp', 'LinkedIn',
+    'Copy this link', 'These are external links and will open in a new window'
+    ]
 DEFAULTS = {
     'publication':'bbc', 'city': 'Montreal,CA',
     'currency_from': 'CAD', 'currency_to': 'USD'
@@ -161,5 +164,7 @@ def get_text_from_bbc(soup):
         for line in soup.find_all('p'):
             if len(line.contents) != 0:
                 content_sents.append(line.contents[0])
-
+    for i in USELESS_SENTENCES:
+        while content_sents.count(i) != 0:
+            content_sents.remove(i)
     return content_sents
