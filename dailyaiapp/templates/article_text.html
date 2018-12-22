@@ -32,11 +32,16 @@
       <br />
       <br />
       <br />
-      {% for textline in article_content %}
+      {% for textline in article_summary %}
           <p>{{ textline }}</p>
       {% endfor %}
       <br />
       <br />
       <br />
+      {% if True %}
+          {% for textline in article_content %}
+              <p>{{ textline }}</p>
+          {% endfor %}
+      {% endif %}
     </div>
 {% endblock %}
