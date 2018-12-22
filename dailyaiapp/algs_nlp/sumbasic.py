@@ -126,6 +126,7 @@ class SumBasicImplementation:
         return sorted_sents
 
     def sumbasic_best_avg(self):
+        
         # step 0 - load the clustered articles, prepare the write doc 
         self.load_cluster()
 
