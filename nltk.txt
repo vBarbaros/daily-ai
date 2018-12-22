@@ -1,4 +1,4 @@
-corpus
 stopwords
-tokenize
-stem
+sent_tokenize
+word_tokenize
+WordNetLemmatizer
