@@ -1,4 +1,1 @@
 stopwords
-sent_tokenize
-word_tokenize
-WordNetLemmatizer
