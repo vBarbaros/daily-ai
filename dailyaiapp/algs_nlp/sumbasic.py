@@ -65,12 +65,13 @@ class SumBasicImplementation:
 
     def clean_text_file(self, txt_file):
         clean_content = []
-        
+
         for paragraph_str in txt_file:
-            # print paragraph_str
-            
-            std_ascii_prgh = ''.join(i for i in str(paragraph_str) if ord(i)<128)
-            # tmp_lst_sents = []
+            try:
+                std_ascii_prgh = ''.join(i for i in str(paragraph_str) if ord(i)<128)
+            except UnicodeEncodeError:
+                continue #start with the next iteration
+
             tmp_lst_sents = sent_tokenize(std_ascii_prgh)
 
             for sentence in tmp_lst_sents:
@@ -126,7 +127,6 @@ class SumBasicImplementation:
         return sorted_sents
 
     def sumbasic_best_avg(self):
-        
         # step 0 - load the clustered articles, prepare the write doc 
         self.load_cluster()
 

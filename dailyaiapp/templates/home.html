@@ -22,7 +22,7 @@
 {% block content %}
     <div class="jumbotron">
       <div class="container">
-        <h1>Daily AI</h1>
+        <h1>Quick News</h1>
         <p>Explore the Power of Math in Your Everyday Life</p>
       </div>  
     </div>
@@ -60,11 +60,11 @@
                 <form class="form-inline" action="/articletext">
                   <tr>
                     <td>
-                      <b><a href="{{article.link}}" target="_blank">{{article.title}}</b></a><br />
+                      <b><a href="{{article.link}}" target="_blank">{{article.title}}</b></a><br/>
                       <i>{{article.published}}</i><br />
                       <p>{{article.summary}}</p>
                     </td>
-                    <td><input type="submit" value="Get Content" class="form-control"></td>
+                    <td><input type="submit" value="Get Summary" class="form-control"></td>
                     <input type="text" name="article_link" value="{{article.link}}" hidden>
                     <input type="text" name="title" value="{{article.title}}" hidden> 
                     <input type="text" name="pub_to_display" value="{{pub_display}}" hidden>  
